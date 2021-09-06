@@ -14,7 +14,7 @@ import (
 
 // Setup configures zerolog by using environment variables.
 // Errors will exit the process fatally.
-func Setup() {
+func Setup(hooks ...zerolog.Hook) {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
 	// set global log level
@@ -38,6 +38,10 @@ func Setup() {
 
 	if env.BoolDefault("LOG_CALLER", false) {
 		log.Logger = log.Logger.With().Caller().Logger()
+	}
+
+	for _, h := range hooks {
+		log.Logger = log.Logger.Hook(h)
 	}
 }
 
