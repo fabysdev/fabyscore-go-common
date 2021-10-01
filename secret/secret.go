@@ -6,13 +6,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"sync"
 
 	"github.com/fabysdev/fabyscore-go-common/env"
 )
 
 // secrets is the in-memory cache for the secrets.
-var mu sync.RWMutex
 var secrets = map[string]string{}
 var replacer = strings.NewReplacer("-", "_", ".", "_")
 

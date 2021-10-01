@@ -24,14 +24,17 @@ var _ interface {
 	graphql.ResponseInterceptor
 } = AccessLog{}
 
+// ExtensionName is the name of the extension.
 func (AccessLog) ExtensionName() string {
 	return "AccessLog"
 }
 
+// Validate is called when adding an extension to the server, it allows validation against the servers schema.
 func (AccessLog) Validate(schema graphql.ExecutableSchema) error {
 	return nil
 }
 
+// InterceptResponse is the interceptor to log the request.
 func (al AccessLog) InterceptResponse(ctx context.Context, next graphql.ResponseHandler) *graphql.Response {
 	rc := graphql.GetOperationContext(ctx)
 
@@ -90,7 +93,7 @@ type requestInformation struct {
 	ip string
 }
 
-var requestInformationContextKey = &server.ContextKey{"requestinformation"}
+var requestInformationContextKey = &server.ContextKey{Name: "requestinformation"}
 
 // AccessLogMiddleware adds request information to the context.
 func AccessLogMiddleware(next http.Handler) http.Handler {
